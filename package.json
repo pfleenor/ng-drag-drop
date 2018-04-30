@@ -9,8 +9,8 @@
     "test": "echo \"Error: no test specified\" && exit 0",
     "start": "tsc -w",
     "transpile": "ngc",
-    "build": "npm run transpile",
-    "preinstall": "npm run build",
+    "preinstall": "npm run transpile",
+    "prepublishOnly": "npm run build",
     "lint": "tslint ./src/**/*.ts -t verbose",
     "dev": "concurrently \"npm start\" \"cd demo && npm start\""
   },
