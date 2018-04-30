@@ -153,6 +153,7 @@ export class Droppable implements OnInit, OnDestroy {
     drop(e) {
         this.allowDrop().subscribe(result => {
             if (result && this._isDragActive) {
+                this._isDragActive = false;
                 DomHelper.removeClass(this.el, this.dragOverClass);
                 e.preventDefault();
                 e.stopPropagation();
@@ -183,7 +184,7 @@ export class Droppable implements OnInit, OnDestroy {
                     return this.ng2DragDropService.scope.indexOf(item) !== -1;
                 }).length > 0;
         } else if (typeof this.dropScope === 'function') {
-            allowed = this.dropScope(this.ng2DragDropService.dragData);
+            allowed = this.dropScope(this.ng2DragDropService.dragData, this);
             if (allowed instanceof Observable) {
                 return allowed.map(result => result && this.dropEnabled);
             }
@@ -222,7 +223,6 @@ export class Droppable implements OnInit, OnDestroy {
         });
 
         this.dragEndSubscription = this.ng2DragDropService.onDragEnd.subscribe(() => {
-            this._isDragActive = false;
             DomHelper.removeClass(this.el, this.dragHintClass);
             this.unbindDragListeners();
         });
